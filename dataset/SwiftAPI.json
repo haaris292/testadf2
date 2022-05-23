@@ -1,0 +1,41 @@
+{
+	"name": "SwiftAPI",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "RestService1",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"reporting_period": {
+				"type": "string",
+				"defaultValue": "2019-07-12"
+			},
+			"target_currency": {
+				"type": "string",
+				"defaultValue": "USD"
+			},
+			"my_institution_country": {
+				"type": "string",
+				"defaultValue": "US"
+			},
+			"direction": {
+				"type": "string",
+				"defaultValue": "RECE_received"
+			},
+			"message_type": {
+				"type": "string",
+				"defaultValue": "105"
+			}
+		},
+		"annotations": [],
+		"type": "RestResource",
+		"typeProperties": {
+			"relativeUrl": {
+				"value": "@concat('bi/compliance-analytics/v1/country-activity-share?','reporting_period=',dataset().reporting_period,'&','my_institution_country=',dataset().my_institution_country,'&','direction=',dataset().direction,'&','target_currency=',dataset().target_currency,'&','message_type=',dataset().message_type)",
+				"type": "Expression"
+			}
+		},
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

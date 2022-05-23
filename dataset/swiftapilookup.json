@@ -1,0 +1,30 @@
+{
+	"name": "swiftapilookup",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LnkSrvCAAP01AzADLSGen2",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "apilookup.csv",
+				"folderPath": "Config/CAAP/Lookup_Files_IngestToRaw",
+				"fileSystem": "caap"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "ORC",
+				"type": "String"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

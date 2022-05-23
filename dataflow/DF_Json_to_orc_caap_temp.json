@@ -1,0 +1,38 @@
+{
+	"name": "DF_Json_to_orc_caap_temp",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "swiftapijson",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"linkedService": {
+						"referenceName": "LnkSrvCAAP01AzADLSGen2",
+						"type": "LinkedServiceReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "Flatten1"
+				},
+				{
+					"name": "DerivedColumn1"
+				},
+				{
+					"name": "Select1"
+				}
+			],
+			"script": "parameters{\n\tfilename as string,\n\tfilenamesink as string,\n\treporting_period as string,\n\tmy_institution_country as string,\n\ttarget_currency as string,\n\tdirection as string,\n\tmessage_type as string,\n\tyear as string,\n\tmonth as string,\n\toutputfilepath as string,\n\tsno as string\n}\nsource(output(\n\t\tcomplianceData as (my_institution_country as (code as string), counterparty_country as (code as string), counterparty_country_risk as (code as string, level as string, short_description as string), messages as string, total_swift_messages as string, swift_activity_share_messages as integer, amount as string, total_swift_amount as string, swift_activity_share_amount as integer)[]\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tpurgeFiles: true,\n\tdocumentForm: 'documentPerLine') ~> source1\nsource1 foldDown(unroll(complianceData),\n\tmapColumn(\n\t\tcomplianceData\n\t),\n\tskipDuplicateMapInputs: false,\n\tskipDuplicateMapOutputs: false) ~> Flatten1\nFlatten1 derive(counterparty_country = \"counterparty_country\",\n\t\t{counterparty_country.code} = toString(complianceData.counterparty_country.code),\n\t\tcounterparty_country_risk = \"counterparty_country_risk\",\n\t\t{counterparty_country_risk.code} = toInteger(complianceData.counterparty_country_risk.code),\n\t\tlevel = toInteger(complianceData.counterparty_country_risk.level),\n\t\tshort_description = toString(complianceData.counterparty_country_risk.short_description),\n\t\t{my_institution_country.code} = toString(complianceData.my_institution_country.code),\n\t\treporting_period = $reporting_period,\n\t\tmy_institution_country = $my_institution_country,\n\t\ttarget_currency = $target_currency,\n\t\tdirection = $direction,\n\t\tmessage_type = $message_type) ~> DerivedColumn1\nDerivedColumn1 select(mapColumn(\n\t\tcounterparty_country,\n\t\t{counterparty_country.code},\n\t\tcounterparty_country_risk,\n\t\t{counterparty_country_risk.code},\n\t\tlevel,\n\t\tshort_description,\n\t\t{my_institution_country.code},\n\t\tmessages = complianceData.messages,\n\t\tamount = complianceData.amount,\n\t\tswift_activity_share_amount = complianceData.swift_activity_share_amount,\n\t\tswift_activity_share_messages = complianceData.swift_activity_share_messages,\n\t\ttotal_swift_amount = complianceData.total_swift_amount,\n\t\ttotal_swift_messages = complianceData.total_swift_messages,\n\t\treporting_period,\n\t\tmy_institution_country,\n\t\ttarget_currency,\n\t\tdirection,\n\t\tmessage_type\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Select1\nSelect1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'orc',\n\tfileSystem: 'caap',\n\tfolderPath: ($outputfilepath),\n\torcCompressionCodec: 'none',\n\tpartitionFileNames:[($sno)],\n\tumask: 0022,\n\tpreCommands: [],\n\tpostCommands: [],\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\tpartitionBy('hash', 1)) ~> sink1"
+		}
+	}
+}

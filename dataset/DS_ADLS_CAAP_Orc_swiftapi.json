@@ -1,0 +1,38 @@
+{
+	"name": "DS_ADLS_CAAP_Orc_swiftapi",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LnkSrvCAAP01AzADLSGen2",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"parm_ds_caap_orc_directory": {
+				"type": "string"
+			},
+			"file_system": {
+				"type": "string"
+			}
+		},
+		"folder": {
+			"name": "CAAP"
+		},
+		"annotations": [],
+		"type": "Orc",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": {
+					"value": "@dataset().parm_ds_caap_orc_directory",
+					"type": "Expression"
+				},
+				"fileSystem": {
+					"value": "@dataset().file_system",
+					"type": "Expression"
+				}
+			},
+			"orcCompressionCodec": "none",
+			"enablePhysicalSchema": true
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

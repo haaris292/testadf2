@@ -1,0 +1,22 @@
+{
+	"name": "RestService1",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "RestService",
+		"typeProperties": {
+			"url": "https://api.swift.com/",
+			"enableServerCertificateValidation": true,
+			"authenticationType": "Basic",
+			"userName": "NiDvgKVlPQHYEDIN7E06Wf5GezKKqbGq",
+			"password": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "Linkcaapde01_d_kv",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "caap01-swift-ca-api-logon-password"
+			}
+		}
+	}
+}

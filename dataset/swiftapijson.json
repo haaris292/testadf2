@@ -1,0 +1,88 @@
+{
+	"name": "swiftapijson",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LnkSrvCAAP01AzADLSGen2",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"datasetfilename": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": {
+					"value": "@dataset().datasetfilename",
+					"type": "Expression"
+				},
+				"fileSystem": "caap"
+			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"complianceData": {
+					"type": "array",
+					"items": {
+						"type": "object",
+						"properties": {
+							"my_institution_country": {
+								"type": "object",
+								"properties": {
+									"code": {
+										"type": "string"
+									}
+								}
+							},
+							"counterparty_country": {
+								"type": "object",
+								"properties": {
+									"code": {
+										"type": "string"
+									}
+								}
+							},
+							"counterparty_country_risk": {
+								"type": "object",
+								"properties": {
+									"code": {
+										"type": "string"
+									},
+									"level": {
+										"type": "string"
+									},
+									"short_description": {
+										"type": "string"
+									}
+								}
+							},
+							"messages": {
+								"type": "string"
+							},
+							"total_swift_messages": {
+								"type": "string"
+							},
+							"swift_activity_share_messages": {
+								"type": "integer"
+							},
+							"amount": {
+								"type": "string"
+							},
+							"total_swift_amount": {
+								"type": "string"
+							},
+							"swift_activity_share_amount": {
+								"type": "integer"
+							}
+						}
+					}
+				}
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

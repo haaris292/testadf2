@@ -1,0 +1,14 @@
+{
+	"name": "DataLakeStore",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "AzureDataLakeStore",
+		"typeProperties": {
+			"dataLakeStoreUri": "https://shell01eunadls1dobdchjqb.azuredatalakestore.net/webhdfs/v1",
+			"tenant": "db1e96a8-a3da-442a-930b-235cac24cd5c",
+			"subscriptionId": "c25bc78a-d6be-4e3c-853c-64fdc5eac10b",
+			"resourceGroupName": "shell-01-rg-srvorbeudnnbrrxftmvx"
+		}
+	}
+}

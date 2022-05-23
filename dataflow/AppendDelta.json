@@ -1,0 +1,38 @@
+{
+	"name": "AppendDelta",
+	"properties": {
+		"folder": {
+			"name": "GenericSCD"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DS_ADLS_CAAP_Orc",
+						"type": "DatasetReference"
+					},
+					"name": "IngestInput"
+				}
+			],
+			"sinks": [
+				{
+					"linkedService": {
+						"referenceName": "LnkSrvCAAP01AzADLSGen2",
+						"type": "LinkedServiceReference"
+					},
+					"name": "WriteToRaw"
+				}
+			],
+			"transformations": [
+				{
+					"name": "AddColumns"
+				},
+				{
+					"name": "RemoveTechnicalColumns"
+				}
+			],
+			"script": "parameters{\n\traw_folder as string,\n\tprocess_date as string\n}\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> IngestInput\nRemoveTechnicalColumns derive(processing_date = toTimestamp($process_date),\n\t\tyear = substring($process_date,0,4)) ~> AddColumns\nIngestInput select(mapColumn(\n\t\teach(match(!in(['processing_date'],name))),\n\t\teach(match(in(['processing_date'],name)),\n\t\t\t'source_'+$$ = $$)\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> RemoveTechnicalColumns\nAddColumns sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'delta',\n\tfileSystem: 'caap',\n\tfolderPath: ($raw_folder),\n\tmergeSchema: true,\n\tautoCompact: true,\n\toptimizedWrite: true,\n\tvacuum: 0,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tumask: 0022,\n\tpreCommands: [],\n\tpostCommands: [],\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\tpartitionBy('key',\n\t\t0,\n\t\tyear\n\t)) ~> WriteToRaw"
+		}
+	}
+}

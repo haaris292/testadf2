@@ -1,0 +1,120 @@
+{
+	"name": "PL_DF_Json_to_orc_caap_temp",
+	"properties": {
+		"activities": [
+			{
+				"name": "PL_DF_Json_to_orc_caap_temp",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "1.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "DF_Json_to_orc_caap_temp",
+						"type": "DataFlowReference",
+						"parameters": {
+							"filename": {
+								"value": "'@{pipeline().parameters.plfilename}'",
+								"type": "Expression"
+							},
+							"filenamesink": {
+								"value": "'@{pipeline().parameters.filenamesink}'",
+								"type": "Expression"
+							},
+							"reporting_period": {
+								"value": "'@{pipeline().parameters.reporting_period}'",
+								"type": "Expression"
+							},
+							"my_institution_country": {
+								"value": "'@{pipeline().parameters.my_institution_country}'",
+								"type": "Expression"
+							},
+							"target_currency": {
+								"value": "'@{pipeline().parameters.target_currency}'",
+								"type": "Expression"
+							},
+							"direction": {
+								"value": "'@{pipeline().parameters.target_currency}'",
+								"type": "Expression"
+							},
+							"message_type": {
+								"value": "'@{pipeline().parameters.message_type}'",
+								"type": "Expression"
+							},
+							"year": {
+								"value": "'@{pipeline().parameters.year}'",
+								"type": "Expression"
+							},
+							"month": {
+								"value": "'@{pipeline().parameters.month}'",
+								"type": "Expression"
+							},
+							"outputfilepath": {
+								"value": "'@{concat('sagar','/','Temp','/','SwiftApi')}'",
+								"type": "Expression"
+							},
+							"sno": {
+								"value": "'@{pipeline().parameters.sno}'",
+								"type": "Expression"
+							}
+						},
+						"datasetParameters": {
+							"source1": {
+								"datasetfilename": {
+									"value": "@concat('sagar','/','Temp','/','SwiftApi','/',pipeline().parameters.sno,'.json')",
+									"type": "Expression"
+								}
+							}
+						}
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
+				}
+			}
+		],
+		"parameters": {
+			"plfilename": {
+				"type": "string"
+			},
+			"filenamesink": {
+				"type": "string"
+			},
+			"reporting_period": {
+				"type": "string"
+			},
+			"my_institution_country": {
+				"type": "string"
+			},
+			"target_currency": {
+				"type": "string"
+			},
+			"direction": {
+				"type": "string"
+			},
+			"message_type": {
+				"type": "string"
+			},
+			"year": {
+				"type": "string"
+			},
+			"month": {
+				"type": "string"
+			},
+			"sno": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"lastPublishTime": "2022-05-12T07:23:52Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

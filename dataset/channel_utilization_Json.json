@@ -1,0 +1,97 @@
+{
+	"name": "channel_utilization_Json",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "DataLakeStore",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"rootPath": {
+				"type": "string"
+			},
+			"fileName": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureDataLakeStoreLocation",
+				"fileName": {
+					"value": "@dataset().fileName",
+					"type": "Expression"
+				},
+				"folderPath": {
+					"value": "@dataset().rootPath",
+					"type": "Expression"
+				}
+			},
+			"encodingName": "UTF-8"
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"dses": {
+					"type": "array",
+					"items": {
+						"type": "object",
+						"properties": {
+							"checked": {
+								"type": "integer"
+							},
+							"chart_type": {
+								"type": "string"
+							}
+						}
+					}
+				},
+				"units": {
+					"type": "string"
+				},
+				"series": {
+					"type": "array",
+					"items": {
+						"type": "object",
+						"properties": {
+							"avg": {
+								"type": "number"
+							},
+							"min": {
+								"type": "number"
+							},
+							"max": {
+								"type": "number"
+							},
+							"last": {
+								"type": "number"
+							},
+							"name": {
+								"type": "string"
+							},
+							"data": {
+								"type": "array",
+								"items": {
+									"type": "array",
+									"items": {
+										"type": "integer"
+									}
+								}
+							},
+							"color": {
+								"type": "string"
+							},
+							"chart_type": {
+								"type": "string"
+							},
+							"type": {
+								"type": "string"
+							}
+						}
+					}
+				}
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

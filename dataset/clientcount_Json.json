@@ -1,0 +1,34 @@
+{
+	"name": "clientcount_Json",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "DataLakeStore",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"rootPath": {
+				"type": "string"
+			},
+			"fileName": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureDataLakeStoreLocation",
+				"fileName": {
+					"value": "@dataset().fileName",
+					"type": "Expression"
+				},
+				"folderPath": {
+					"value": "@dataset().rootPath",
+					"type": "Expression"
+				}
+			}
+		},
+		"schema": {}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

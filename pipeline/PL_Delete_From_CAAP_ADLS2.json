@@ -1,0 +1,64 @@
+{
+	"name": "PL_Delete_From_CAAP_ADLS2",
+	"properties": {
+		"activities": [
+			{
+				"name": "Delete",
+				"type": "Delete",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataset": {
+						"referenceName": "DS_ADLS_CAAP_Binary",
+						"type": "DatasetReference",
+						"parameters": {
+							"ds_parm_directory": {
+								"value": "@pipeline().parameters.path_to_be_deleted",
+								"type": "Expression"
+							},
+							"ds_parm_file_system": {
+								"value": "@pipeline().parameters.file_system",
+								"type": "Expression"
+							}
+						}
+					},
+					"enableLogging": false,
+					"storeSettings": {
+						"type": "AzureBlobFSReadSettings",
+						"recursive": {
+							"value": "@pipeline().parameters.recursive",
+							"type": "Expression"
+						},
+						"enablePartitionDiscovery": false
+					}
+				}
+			}
+		],
+		"parameters": {
+			"path_to_be_deleted": {
+				"type": "string"
+			},
+			"recursive": {
+				"type": "bool",
+				"defaultValue": false
+			},
+			"file_system": {
+				"type": "string",
+				"defaultValue": "caap"
+			}
+		},
+		"folder": {
+			"name": "Maintenance pipelines"
+		},
+		"annotations": [],
+		"lastPublishTime": "2022-05-12T07:23:53Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}
